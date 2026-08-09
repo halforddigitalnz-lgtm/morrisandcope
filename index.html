@@ -67,39 +67,30 @@
         </div>
       </div>
 
-      <!-- Signature: an attitude indicator. It starts pitched and rolling,
-           then settles level — the site's own metaphor, made literal. -->
-      <div class="instrument">
-        <div class="horizon" role="img" aria-label="An aircraft attitude indicator settling to level, illustrating a business with its books in order.">
-          <div class="horizon__glass">
-            <div class="horizon__ball">
-              <div class="horizon__line"></div>
-              <div class="horizon__ladder"><i></i><i></i><i></i><i></i></div>
-            </div>
-            <div class="horizon__ref">
-              <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
-                <g stroke="#FFC500" stroke-width="2.2" stroke-linecap="round">
-                  <path d="M18 50 H34"/><path d="M18 50 V55"/>
-                  <path d="M82 50 H66"/><path d="M82 50 V55"/>
-                </g>
-                <circle cx="50" cy="50" r="2.4" fill="#FFC500"/>
-                <path d="M50 9 l4 7 h-8 z" fill="#FFC500"/>
-              </svg>
-            </div>
-            <div class="horizon__ticks">
-              <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
-                <circle cx="50" cy="50" r="45" stroke="rgba(255,255,255,.34)" stroke-width="3.6"
-                        stroke-dasharray="0.6 5.85" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <span class="horizon__cap">Books level</span>
-          </div>
+      <!-- Signature: the visitor works out their own number. Plain arithmetic
+           on what they enter — nothing invented, nothing claimed. -->
+      <div class="calc" data-calc>
+        <h2 class="calc__title">What your admin costs you in time</h2>
+
+        <label class="calc__label" for="admin-hours">Hours a week you spend on accounts admin</label>
+        <div class="calc__control">
+          <input id="admin-hours" type="range" min="1" max="20" step="1" value="6"
+                 aria-describedby="calc-result">
+          <output class="calc__badge" for="admin-hours" data-hours>6 hrs</output>
         </div>
-        <div class="readouts">
-          <span class="readout"><b>✓</b> Bank rec</span>
-          <span class="readout"><b>✓</b> GST</span>
-          <span class="readout"><b>✓</b> Payroll</span>
+        <ul class="calc__scale" aria-hidden="true">
+          <li>1</li><li>5</li><li>10</li><li>15</li><li>20</li>
+        </ul>
+
+        <div class="calc__result" id="calc-result" aria-live="polite">
+          <strong class="calc__big" data-year>312</strong>
+          <span class="calc__unit">hours a year on accounts admin</span>
+          <p class="calc__note">That's about <b data-weeks>8</b> working weeks. Time you could be spending on the business instead.</p>
         </div>
+
+        <a class="calc__cta link-arrow" href="contact.html"><span>See what we'd charge to take it on</span>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
     </div>
   </section>
@@ -302,9 +293,6 @@
           <path class="route__trace" d="M125 46 C 210 16, 292 18, 375 34 C 462 51, 540 66, 625 51 C 702 38, 800 24, 875 40"
                 pathLength="1" fill="none" stroke="#FFC500" stroke-width="2.4"
                 stroke-linecap="round" stroke-dasharray="1" stroke-dashoffset="1"/>
-          <g class="route__plane" style="opacity:0">
-            <path d="M9 0 L-6 -6 L-3 0 L-6 6 Z"/>
-          </g>
         </svg>
 
         <div class="route__steps">

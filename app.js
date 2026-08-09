@@ -38,10 +38,53 @@ requestAnimationFrame(() => {
   document.querySelectorAll('.stage').forEach(s => s.classList.add('is-live'));
 });
 
-/* Hand the attitude indicator over to its idle drift once it has settled */
-const horizon = document.querySelector('.horizon');
-if (horizon && !reduced) {
-  setTimeout(() => horizon.classList.add('is-level'), 3950);
+/* ---------- Hero calculator ----------
+   Straight arithmetic on what the visitor enters. The markup already holds
+   a sensible default, so this only ever refines what is on screen. */
+const calc = document.querySelector('[data-calc]');
+if (calc) {
+  const slider  = calc.querySelector('input[type="range"]');
+  const hoursEl = calc.querySelector('[data-hours]');
+  const yearEl  = calc.querySelector('[data-year]');
+  const weeksEl = calc.querySelector('[data-weeks]');
+  const WEEKS_IN_YEAR = 52;
+  const WORKING_WEEK  = 40;
+
+  const paint = () => {
+    const hours = Number(slider.value);
+    const min = Number(slider.min), max = Number(slider.max);
+    const perYear = hours * WEEKS_IN_YEAR;
+
+    slider.style.setProperty('--fill', ((hours - min) / (max - min)) * 100 + '%');
+    hoursEl.textContent = hours + (hours === 1 ? ' hr' : ' hrs');
+    yearEl.textContent  = perYear.toLocaleString('en-NZ');
+    weeksEl.textContent = Math.round(perYear / WORKING_WEEK);
+
+    yearEl.classList.remove('is-tick');
+    void yearEl.offsetWidth;          // restart the nudge on every change
+    yearEl.classList.add('is-tick');
+  };
+
+  slider.addEventListener('input', paint);
+  paint();
+
+  // Count the headline figure up once, the first time it is seen
+  if (!reduced) {
+    const target = Number(slider.value) * WEEKS_IN_YEAR;
+    const countIO = new IntersectionObserver((entries, obs) => {
+      if (!entries[0].isIntersecting) return;
+      obs.disconnect();
+      const started = performance.now();
+      const run = (now) => {
+        const t = Math.min(1, (now - started) / 950);
+        const eased = 1 - Math.pow(1 - t, 3);
+        yearEl.textContent = Math.round(target * eased).toLocaleString('en-NZ');
+        if (t < 1) requestAnimationFrame(run);
+      };
+      requestAnimationFrame(run);
+    }, { threshold: 0.4 });
+    countIO.observe(calc);
+  }
 }
 
 /* ---------- Scroll reveals ---------- */
@@ -84,10 +127,8 @@ if (steps.length) {
 /* ---------- Flight path: the route draws itself as you scroll ---------- */
 const route = document.querySelector('.route');
 const trace = route?.querySelector('.route__trace');
-const plane = route?.querySelector('.route__plane');
-const guide = route?.querySelector('.route__line');
 
-if (route && trace && guide && !reduced) {
+if (route && trace && !reduced) {
   let ticking = false;
 
   const draw = () => {
@@ -100,15 +141,6 @@ if (route && trace && guide && !reduced) {
     const p = Math.min(1, Math.max(0, (start - r.top) / Math.max(1, start - end + r.height * 0.35)));
 
     trace.style.strokeDashoffset = String(1 - p);
-
-    if (plane) {
-      const len = guide.getTotalLength();
-      const pt = guide.getPointAtLength(len * p);
-      const ahead = guide.getPointAtLength(Math.min(len, len * p + 6));
-      const angle = Math.atan2(ahead.y - pt.y, ahead.x - pt.x) * 180 / Math.PI;
-      plane.setAttribute('transform', `translate(${pt.x} ${pt.y}) rotate(${angle})`);
-      plane.style.opacity = p > 0.005 ? '1' : '0';
-    }
   };
 
   const request = () => { if (!ticking) { ticking = true; requestAnimationFrame(draw); } };

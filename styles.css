@@ -1,8 +1,8 @@
 /* ==========================================================================
    Morris & Cope — bookkeeping & accounts administration, Motueka NZ
-   Design system. The site's own copy runs an aviation metaphor
-   (dashboard / co-pilot / altimeter / radar), so the visual language is
-   flight-instrument: hairline ticks, mono labelling, one settling horizon.
+   Design system. The visual language is the bookkeeper's own: ruled ledger
+   lines, mono labelling for anything numeric, and one interactive moment —
+   the hero calculator, where the visitor works out their own number.
    ========================================================================== */
 
 /* ---------- 1. Tokens ---------- */
@@ -80,7 +80,7 @@ button { font: inherit; color: inherit; }
 
 /* ---------- 3. Typography ---------- */
 /* Display: Archivo run wide (wdth 112) to echo the wide, rounded logotype.
-   Body: Figtree. Utility: IBM Plex Mono for instrument labelling. */
+   Body: Figtree. Utility: IBM Plex Mono for labels and anything numeric. */
 h1, h2, h3, h4, .display {
   font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
   font-variation-settings: 'wdth' 112;
@@ -415,120 +415,150 @@ section { position: relative; }
 .stage.is-live > *:nth-child(5) { animation-delay: .45s; }
 @keyframes stageIn { to { opacity: 1; transform: none; } }
 
-/* ---------- 8. The signature: attitude indicator ---------- */
-.instrument { display: grid; justify-items: center; gap: var(--s5); }
-.horizon {
+/* ---------- 8. The signature: hours-back calculator ----------
+   A ruled panel, like a page from a ledger. Every number on it comes from
+   the visitor's own slider input — no invented figures. Works without JS
+   (the default 6 hrs / 312 hours is already rendered in the markup). */
+.calc {
   position: relative;
-  width: min(400px, 78vw);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background:
-    conic-gradient(from 210deg, #1b3459, #0d1e35 25%, #23446f 50%, #0d1e35 75%, #1b3459);
-  padding: 14px;
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,.13),
-    0 30px 70px -22px rgba(0,0,0,.85),
-    inset 0 2px 3px rgba(255,255,255,.16);
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--s5), 3.4vw, var(--s7));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 2px 6px rgba(0,0,0,.2), 0 30px 60px -24px rgba(0,0,0,.7);
   opacity: 0;
-  transform: scale(.9);
-  animation: instrumentIn .9s var(--ease-out) .25s forwards;
-}
-@keyframes instrumentIn { to { opacity: 1; transform: none; } }
-
-.horizon__glass {
-  position: relative;
-  width: 100%; height: 100%;
-  border-radius: 50%;
+  transform: translateY(18px);
+  animation: calcIn .8s var(--ease-out) .3s forwards;
   overflow: hidden;
-  background: #0a1729;
-  box-shadow: inset 0 0 0 2px rgba(0,0,0,.5), inset 0 6px 22px rgba(0,0,0,.6);
 }
-/* The moving ball: rolls and pitches, then settles level */
-.horizon__ball {
-  position: absolute;
-  left: -55%; right: -55%; top: -75%; bottom: -75%;
-  transform-origin: 50% 50%;
-  animation: settle 3.4s var(--ease-out) .5s forwards;
+/* Faint ruled lines, the way an accounts pad is ruled */
+.calc::before {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom, rgba(255,255,255,.035) 0 1px, transparent 1px 30px);
+  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
 }
-.horizon__ball::before,
-.horizon__ball::after {
-  content: ''; position: absolute; left: 0; right: 0; height: 50%;
-}
-.horizon__ball::before { top: 0;    background: linear-gradient(180deg, #4F92E4, #1E5EB6); }
-.horizon__ball::after  { bottom: 0; background: linear-gradient(180deg, #5E4A22, #241A0B); }
-.horizon__line {
-  position: absolute; left: 0; right: 0; top: 50%;
-  height: 2px; background: rgba(255,255,255,.92);
-  transform: translateY(-1px);
-  z-index: 2;
-}
-/* Pitch ladder — rungs sit inside the ball, so they roll and pitch with it */
-.horizon__ladder i {
-  position: absolute;
-  left: 50%; translate: -50% 0;
-  height: 1.5px; background: rgba(255,255,255,.5);
-  border-radius: 2px;
-  z-index: 3;
-}
-.horizon__ladder i:nth-child(1) { top: 44.4%; width: 6%; }
-.horizon__ladder i:nth-child(2) { top: 41.6%; width: 10%; }
-.horizon__ladder i:nth-child(3) { top: 55.6%; width: 6%; }
-.horizon__ladder i:nth-child(4) { top: 58.4%; width: 10%; }
-@keyframes settle {
-  0%   { transform: rotate(-19deg) translateY(9%); }
-  35%  { transform: rotate(11deg)  translateY(-5.5%); }
-  62%  { transform: rotate(-5deg)  translateY(2.5%); }
-  82%  { transform: rotate(2deg)   translateY(-1%); }
-  100% { transform: rotate(0deg)   translateY(0); }
-}
-/* Ambient breathing once level, so the panel never looks frozen */
-.horizon.is-level .horizon__ball { animation: idle 11s ease-in-out infinite; }
-@keyframes idle {
-  0%, 100% { transform: rotate(-.9deg) translateY(.5%); }
-  50%      { transform: rotate(.9deg)  translateY(-.5%); }
-}
+.calc > * { position: relative; }
+@keyframes calcIn { to { opacity: 1; transform: none; } }
 
-/* Fixed aircraft reference symbol, in signal yellow */
-.horizon__ref { position: absolute; inset: 0; z-index: 4; }
-.horizon__ref svg { width: 100%; height: 100%; }
-/* Bezel tick ring */
-.horizon__ticks { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
-.horizon__ticks svg { width: 100%; height: 100%; }
-/* Glass sheen */
-.horizon__glass::after {
-  content: ''; position: absolute; inset: 0; z-index: 6; pointer-events: none;
-  background: linear-gradient(152deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.05) 28%, transparent 52%);
+.calc__title {
+  font-size: 1.22rem;
+  color: #fff;
+  margin-bottom: var(--s6);
+  padding-bottom: var(--s5);
+  border-bottom: 1px solid rgba(255,255,255,.14);
 }
-.horizon__cap {
-  position: absolute; z-index: 7; left: 50%; bottom: 15%; translate: -50% 0;
+.calc__label {
+  display: block;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
+  font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
   color: rgba(255,255,255,.62);
-  white-space: nowrap;
+  margin-bottom: var(--s4);
 }
 
-/* Status chips beneath the instrument */
-.readouts { display: flex; flex-wrap: wrap; gap: var(--s2); justify-content: center; }
-.readout {
-  display: inline-flex; align-items: center; gap: var(--s2);
-  padding: 7px var(--s4) 7px var(--s3);
-  border: 1px solid rgba(255,255,255,.16);
-  background: rgba(255,255,255,.05);
+/* Slider */
+.calc__control { display: flex; align-items: center; gap: var(--s4); }
+.calc__control input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  flex: 1; min-width: 0;
+  height: 34px;
+  margin: 0;
+  background: linear-gradient(to right,
+      var(--signal) 0 var(--fill, 26.3%),
+      rgba(255,255,255,.18) var(--fill, 26.3%) 100%)
+    center / 100% 8px no-repeat;
   border-radius: 999px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: .66rem; letter-spacing: .13em; text-transform: uppercase;
-  color: rgba(255,255,255,.74);
-  opacity: 0; transform: translateY(8px);
-  animation: stageIn .5s var(--ease-out) forwards;
+  cursor: grab;
 }
-.readout:nth-child(1) { animation-delay: 1.55s; }
-.readout:nth-child(2) { animation-delay: 1.7s; }
-.readout:nth-child(3) { animation-delay: 1.85s; }
-.readout b {
-  width: 15px; height: 15px; border-radius: 50%;
-  background: var(--signal); color: var(--ink);
-  display: grid; place-items: center;
-  font-size: .58rem; font-weight: 700; line-height: 1;
+.calc__control input[type="range"]:active { cursor: grabbing; }
+.calc__control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--signal);
+  border: 3px solid #0d213a;
+  box-shadow: 0 2px 5px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.22);
+  transition: transform .24s var(--ease-back);
+}
+.calc__control input[type="range"]::-moz-range-thumb {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--signal);
+  border: 3px solid #0d213a;
+  box-shadow: 0 2px 5px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.22);
+  transition: transform .24s var(--ease-back);
+}
+.calc__control input[type="range"]:hover::-webkit-slider-thumb,
+.calc__control input[type="range"]:focus-visible::-webkit-slider-thumb { transform: scale(1.16); }
+.calc__control input[type="range"]:hover::-moz-range-thumb,
+.calc__control input[type="range"]:focus-visible::-moz-range-thumb { transform: scale(1.16); }
+.calc__control input[type="range"]:focus-visible { outline: 3px solid var(--signal); outline-offset: 6px; }
+
+.calc__badge {
+  flex: none;
+  min-width: 74px;
+  text-align: center;
+  padding: 7px var(--s3);
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .78rem; font-weight: 500;
+  color: #fff;
+}
+
+.calc__scale {
+  display: flex; justify-content: space-between;
+  list-style: none; margin: var(--s2) 0 0; padding: 0 92px 0 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem; letter-spacing: .1em;
+  color: rgba(255,255,255,.34);
+}
+
+/* Result */
+.calc__result {
+  margin-top: var(--s6);
+  padding-top: var(--s5);
+  border-top: 1px solid rgba(255,255,255,.14);
+}
+.calc__big {
+  display: block;
+  font-family: 'Archivo', sans-serif;
+  font-variation-settings: 'wdth' 118;
+  font-weight: 800;
+  font-size: clamp(3.4rem, 8vw, 5rem);
+  line-height: .92;
+  letter-spacing: -0.045em;
+  color: var(--signal);
+  font-variant-numeric: tabular-nums;
+}
+.calc__big.is-tick { animation: tick .34s var(--ease-back); }
+@keyframes tick {
+  0%   { transform: translateY(4px) scale(.985); }
+  100% { transform: none; }
+}
+.calc__unit {
+  display: block;
+  margin-top: var(--s2);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(255,255,255,.62);
+}
+.calc__note {
+  margin: var(--s4) 0 0;
+  font-size: .95rem; line-height: 1.55;
+  color: rgba(255,255,255,.76);
+}
+.calc__note b { color: #fff; font-variant-numeric: tabular-nums; }
+
+.calc__cta {
+  margin-top: var(--s6);
+  color: var(--signal);
 }
 
 /* ---------- 9. Ticker ---------- */
@@ -711,7 +741,6 @@ section { position: relative; }
   stroke-dasharray: 7 9;
   stroke-linecap: round;
 }
-.route__plane { fill: var(--signal); }
 .route__steps {
   z-index: 1;
   display: grid;
@@ -1098,14 +1127,14 @@ section { position: relative; }
   margin: var(--s2) 0 var(--s4);
 }
 
-/* Pillar cards (about) — icons drawn as instruments, matching the hero */
+/* Pillar cards (about) — a ruled cap instead of an icon, so the type leads */
 .pillar { display: flex; flex-direction: column; gap: var(--s4); }
-.pillar .pillar-ico {
-  width: 68px; height: 68px;
-  background: var(--blue-wash);
-  border-radius: 18px; padding: 12px;
-  border: 1px solid var(--mist);
+.pillar::before {
+  content: '';
+  width: 40px; height: 3px; border-radius: 2px;
+  background: var(--signal);
 }
+.pillar h3 { font-size: 1.34rem; }
 
 /* ---------- 22. Responsive ---------- */
 @media (max-width: 1040px) {
@@ -1171,9 +1200,7 @@ section { position: relative; }
   .hero__proof { flex-wrap: nowrap; gap: var(--s4); }
   .hero__proof img { height: 56px; }
   .hero__proof p { max-width: none; font-size: .88rem; }
-  .horizon { width: min(290px, 68vw); padding: 10px; }
-  .horizon__cap { font-size: .56rem; bottom: 13%; }
-  .readout { font-size: .6rem; padding: 6px var(--s3) 6px 6px; }
+  .calc__scale { padding-right: 84px; }
   .checks { grid-template-columns: 1fr; }
   .foot-grid { grid-template-columns: 1fr; }
   .hero { padding-bottom: var(--s8); }
@@ -1190,7 +1217,7 @@ section { position: relative; }
     animation-iteration-count: 1 !important;
     transition-duration: .001ms !important;
   }
-  .reveal, .stage > *, .readout, .horizon { opacity: 1 !important; transform: none !important; }
+  .reveal, .stage > *, .calc { opacity: 1 !important; transform: none !important; }
   .ticker__track { animation: none; }
 }
 
