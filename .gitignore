@@ -1,0 +1,5 @@
+.DS_Store
+node_modules/
+
+# Local QA captures — regenerated on demand via screenshot.mjs
+temporary screenshots/
