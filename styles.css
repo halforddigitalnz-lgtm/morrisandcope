@@ -665,6 +665,41 @@ section { position: relative; }
 .svc__go svg { transition: transform .34s var(--ease-back); }
 .svc:hover .svc__go svg { transform: translateX(5px); }
 
+/* Foundation block — the bookkeeping list sits a step below the advisory
+   cards on purpose: same family, quieter voice. */
+.foundation {
+  margin-top: var(--s8);
+  display: grid;
+  grid-template-columns: minmax(0, 380px) 1fr;
+  gap: clamp(var(--s5), 4vw, var(--s8));
+  align-items: start;
+  padding: clamp(var(--s5), 4vw, var(--s7));
+  background: var(--white);
+  border: 1px solid var(--mist);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+}
+.foundation__intro h3 { margin-bottom: var(--s3); }
+.foundation__intro p { color: var(--slate); font-size: .95rem; }
+.foundation__list {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: var(--s2) var(--s5);
+  align-self: center;
+}
+.foundation__list a {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s3);
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--mist);
+  text-decoration: none;
+  font-weight: 600; font-size: .95rem;
+  color: var(--navy);
+  transition: color .22s var(--ease), padding-left .28s var(--ease);
+}
+.foundation__list a svg { flex: none; color: var(--blue); opacity: 0; transform: translateX(-4px); transition: opacity .26s var(--ease), transform .3s var(--ease-back); }
+.foundation__list a:hover { color: var(--blue); padding-left: var(--s2); }
+.foundation__list a:hover svg { opacity: 1; transform: none; }
+
 /* ---------- 11. Photo treatment ---------- */
 .photo {
   position: relative;
@@ -1170,6 +1205,9 @@ section { position: relative; }
   .step__dot img { width: 38px; height: 38px; }
   .step__body { padding-top: var(--s2); }
 }
+@media (max-width: 900px) {
+  .foundation { grid-template-columns: 1fr; }
+}
 @media (max-width: 760px) {
   body { font-size: 16.5px; }
   .split, .split--wide-left { grid-template-columns: 1fr; gap: var(--s7); }
@@ -1182,6 +1220,7 @@ section { position: relative; }
 }
 @media (max-width: 620px) {
   .grid--3 { grid-template-columns: 1fr; }
+  .foundation__list { grid-template-columns: 1fr; }
 
   /* Service cards become scannable rows — nine of them fit in a thumb-flick,
      instead of nine full-height cards. */

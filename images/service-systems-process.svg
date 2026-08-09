@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 312 156" fill="none" role="img">
+  <title>Systems, workflow and process improvement</title>
+  <!-- gear over the middle of the flow: stubby teeth so it reads as a cog -->
+  <g stroke="#111111" stroke-width="6" stroke-linecap="butt">
+    <path d="M156 20 v-5"/><path d="M156 48 v5"/>
+    <path d="M170 34 h5"/><path d="M142 34 h-5"/>
+    <path d="M165.9 24.1 l3.5-3.5"/><path d="M146.1 43.9 l-3.5 3.5"/>
+    <path d="M165.9 43.9 l3.5 3.5"/><path d="M146.1 24.1 l-3.5-3.5"/>
+  </g>
+  <circle cx="156" cy="34" r="14" stroke="#111111" stroke-width="3" fill="#ffffff"/>
+  <circle cx="156" cy="34" r="5" stroke="#111111" stroke-width="2.6"/>
+
+  <!-- three process nodes, the last one settled -->
+  <rect x="16" y="82" width="64" height="44" rx="7" stroke="#111111" stroke-width="3"/>
+  <rect x="124" y="82" width="64" height="44" rx="7" stroke="#111111" stroke-width="3"/>
+  <rect x="232" y="82" width="64" height="44" rx="7" stroke="#174BA0" stroke-width="3"/>
+
+  <path d="M29 97 h38 M29 110 h24" stroke="#111111" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M137 97 h38 M137 110 h24" stroke="#111111" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M247 105 l8 8 15 -17" stroke="#174BA0" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- connectors -->
+  <g stroke="#174BA0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M84 104 h32"/><path d="M109 97 l7 7 -7 7"/>
+    <path d="M192 104 h32"/><path d="M217 97 l7 7 -7 7"/>
+  </g>
+</svg>

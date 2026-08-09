@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 312 156" fill="none" role="img">
+  <title>Budgeting, pricing and profitability</title>
+  <!-- price tag -->
+  <path d="M20 84 L64 40 H100 A6 6 0 0 1 106 46 V82 L62 126 Z"
+        stroke="#111111" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="88" cy="58" r="7.5" stroke="#111111" stroke-width="3"/>
+  <!-- percentage mark on the tag face -->
+  <g stroke="#174BA0" stroke-width="2.8" stroke-linecap="round">
+    <path d="M50 96 l22 -22"/>
+  </g>
+  <circle cx="50" cy="76" r="4" stroke="#174BA0" stroke-width="2.6"/>
+  <circle cx="72" cy="98" r="4" stroke="#174BA0" stroke-width="2.6"/>
+
+  <!-- margin climbing -->
+  <g stroke="#174BA0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M120 84 h26"/><path d="M139 77 l7 7 -7 7"/>
+  </g>
+
+  <rect x="162" y="94" width="26" height="30" stroke="#111111" stroke-width="3"/>
+  <rect x="200" y="74" width="26" height="50" stroke="#111111" stroke-width="3"/>
+  <rect x="238" y="52" width="26" height="72" fill="#174BA0"/>
+  <path d="M154 124 H288" stroke="#111111" stroke-width="3" stroke-linecap="round"/>
+  <path d="M168 44 L206 34 L252 22" stroke="#111111" stroke-width="3"
+        stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="9 8"/>
+  <path d="M243 18 l11 3 -4 11" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
